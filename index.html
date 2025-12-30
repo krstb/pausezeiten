@@ -13,29 +13,26 @@
     <link rel="apple-touch-icon" href="icon-192.png">
 
     <style>
-        /* Der bewährte Fix aus ton.html für schwarze Ränder */
         html { background-color: #000000 !important; }
 
         body {
-    background-color: #3289D1; 
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center; /* Zentriert den Container horizontal */
-    
-    /* --- HIER SIND DIE ENTSCHEIDENDEN ÄNDERUNGEN --- */
-    align-items: flex-start;  /* Ändert die Ausrichtung von 'center' auf den Anfang (oben) */
-    padding-top: 40px;        /* Erzeugt den gewünschten Abstand zur schwarzen Statuszeile */
-    /* ----------------------------------------------- */
-    
-    font-family: ui-sans-serif, system-ui, sans-serif;
+            background-color: #3289D1; 
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            /* ÄNDERUNG: Richtet den Inhalt oben aus statt mittig */
+            align-items: flex-start; 
+            /* ÄNDERUNG: Abstand nach oben, damit er nicht ganz am Rand klebt */
+            padding-top: 40px; 
+            font-family: ui-sans-serif, system-ui, sans-serif;
         }
-        /* Der Container, der 2/3 der Breite einnimmt */
+
         .content-card {
-            width: 66vw; /* Exakt 2/3 der Bildschirmbreite */
-            min-width: 280px; /* Schutz vor zu schmalen Displays */
-            max-width: 400px; /* Schutz vor zu breiten Tabletten */
+            width: 66vw;
+            min-width: 280px;
+            max-width: 400px;
             background-color: #ffffff;
             border-radius: 2rem;
             padding: 1.5rem;
@@ -44,14 +41,13 @@
             box-sizing: border-box;
         }
 
-        /* Design-Elemente (unverändert) */
+        /* Restliche Styles wie gehabt... */
         .text-2xl { font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; }
         .bg-gradient-text { 
             background: linear-gradient(to right, #06b6d4, #0284c7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
         .btn-container {
             background-color: #f9fafb;
             padding: 0.75rem;
@@ -60,7 +56,6 @@
             border: 1px solid #e5e7eb;
             margin-bottom: 1rem;
         }
-
         .btn {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -71,7 +66,6 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
         .bg-green-500 { background-color: #22c55e; color: white; }
         .bg-red-500 { background-color: #ef4444; color: white; }
         .bg-cyan-500 { background-color: #06b6d4; color: white; }
@@ -97,7 +91,7 @@
     </div>
 
     <script>
-        // ... Deine funktionierende Logik (dailyAlarmBtn, testToneBtn, playTone, setNextAlarm) ...
+        /* Skript-Logik bleibt identisch... */
         const dailyAlarmBtn = document.getElementById('dailyAlarmBtn');
         const testToneBtn = document.getElementById('testToneBtn');
         let isDailyAlarmActive = true;
@@ -137,6 +131,7 @@
             const alarm1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 30, 0);
             const alarm2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13, 0, 0);
             let nextAlarm = now < alarm1 ? alarm1 : (now < alarm2 ? alarm2 : new Date(now.getTime() + 86400000));
+            if (nextAlarm.getHours() === 13 === false && now >= alarm2) nextAlarm.setHours(9,30,0);
             const timeToNextAlarm = nextAlarm.getTime() - now.getTime();
             dailyAlarmTimeoutId = setTimeout(() => { playTone(); setNextAlarm(); }, timeToNextAlarm);
         };
@@ -153,4 +148,3 @@
     </script>
 </body>
 </html>
-
