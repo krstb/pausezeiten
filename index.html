@@ -5,15 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pausezeiten</title>
 
-<link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#3289D1">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#000000">
     <meta name="color-scheme" content="light">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="icon-192.png">
 
     <script>
-      // Service Worker Registrierung
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('sw.js')
@@ -22,119 +21,86 @@
       }
     </script>
     
-        <style>
-    /* 1. Die Basis bleibt schwarz für die Statusleiste */
-    html { background-color: #000000 !important; }
+    <style>
+        /* Fix für PWA-Ränder wie in ton.html */
+        html { background-color: #000000 !important; }
 
-    body {
-        background-color: #000000; /* Körper ist schwarz -> Statuszeile wird schwarz */
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
+        body {
+            background-color: #3289D1; /* Startfarbe Blau */
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.5s ease-in-out; /* Sanfter Übergang aus ton.html */
+        }
 
-    /* Hier das background-color: #3289D1 entfernen, damit es nicht das Schwarz überlagert */
-    .min-h-screen { 
-        min-height: 100vh; 
-        display: flex;
-    }
+        .min-h-screen { 
+            min-height: 100vh; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-      .min-h-screen { 
-        min-height: 100vh; 
-        background-color: #3289D1; /* Hier ist dein Blau wieder! */
-        /* Der Gradient liegt hier drüber, falls du ihn noch willst */
-        background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); 
-      }
-      .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); }
-      .from-gray-100 { --tw-gradient-from: #f3f4f6; --tw-gradient-to: rgba(243, 244, 246, 0); }
-      .to-gray-200 { --tw-gradient-to: #e5e7eb; }
-      .flex { display: flex; }
-      .items-center { align-items: center; }
-      .justify-center { justify-content: center; }
-      .p-2 { padding: 0.5rem; }
-      .text-slate-800 { color: #1e293b; }
-      .font-sans { font-family: ui-sans-serif, system-ui, sans-serif, "Apple  Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto  Emoji"; }
-      .w-full { width: 100%; }
-      .max-w-sm { max-width: 24rem; }
-      .bg-white { background-: #fff; }
-      .rounded-3xl { border-radius: 1.5rem; }
-      .shadow-xl { --tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow); }
-      .p-6 { padding: 1.5rem; }
-      .border { border-width: 1px; }
-      .border-gray-200 { border-color: #e5e7eb; }
-      .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-      .font-extrabold { font-weight: 800; }
-      .text-center { text-align: center; }
-      .mb-6 { margin-bottom: 1.5rem; }
-      .text-transparent { color: transparent; }
-      .bg-clip-text { -webkit-background-clip: text; background-clip: text; }
-      .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
-      .from-cyan-500 { --tw-gradient-from: #06b6d4; --tw-gradient-to: rgba(6, 182, 212, 0); }
-      .to-sky-600 { --tw-gradient-to: #0284c7; }
-      .p-3 { padding: 0.75rem; }
-      .bg-gray-50 { background-color: #f9fafb; }
-      .rounded-2xl { border-radius: 1rem; }
-      .shadow-inner { --tw-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow); }
-      .mb-4 { margin-bottom: 1rem; }
-      .w-full { width: 100%; }
-      .px-4 { padding-left: 1rem; padding-right: 1rem; }
-      .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-      .rounded-2xl { border-radius: 1rem; }
-      .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-      .font-bold { font-weight: 700; }
-      .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
-      .duration-300 { transition-duration: 300ms; }
-      .transform { transform: translate(0, 0) rotate(0) skewX(0) skewY(0) scaleX(1) scaleY(1); }
-      .bg-green-500 { background-color: #22c55e; }
-      .text-white { color: #fff; }
-      .shadow-lg { --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow); }
-      .hover\:bg-green-400:hover { background-color: #4ade80; }
-      .hover\:scale-105:hover { --tw-scale-x: 1.05; --tw-scale-y: 1.05; transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
-      .hover\:shadow-2xl:hover { --tw-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow); }
-      .bg-red-500 { background-color: #ef4444; }
-      .hover\:bg-red-400:hover { background-color: #f87171; }
-      .bg-cyan-500 { background-color: #06b6d4; }
-      .hover\:bg-cyan-400:hover { background-color: #22d3ee; }
-      .from-gray-50 { --tw-gradient-from: #f9fafb; --tw-gradient-to: rgba(249, 250, 251, 0); }
-      .to-gray-100 { --tw-gradient-to: #f3f4f6; }
-      .flex-col { flex-direction: column; }
-      .p-4 { padding: 1rem; }
-      .text-red-700 { color: #b91c1c; }
-      .text-slate-800 { color: #1e293b; }
-      .rounded-2xl { border-radius: 1rem; }
-      .shadow-xl { --tw-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow); }
-      .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-      .font-bold { font-weight: 700; }
-      .mb-2 { margin-bottom: 0.5rem; }
-      .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-      .text-xs { font-size: 0.75rem; line-height: 1rem; }
-      .text-red-500 { color: #ef4444; }
-      .mt-2 { margin-top: 0.5rem; }
-      .border-red-400 { border-color: #f87171; }
+        /* Restliche Styles bleiben unverändert */
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .p-2 { padding: 0.5rem; }
+        .text-slate-800 { color: #1e293b; }
+        .font-sans { font-family: ui-sans-serif, system-ui, sans-serif; }
+        .w-full { width: 100%; }
+        .max-w-sm { max-width: 24rem; }
+        .bg-white { background-color: #fff; }
+        .rounded-3xl { border-radius: 1.5rem; }
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .p-6 { padding: 1.5rem; }
+        .border { border-width: 1px; }
+        .border-gray-200 { border-color: #e5e7eb; }
+        .text-2xl { font-size: 1.5rem; }
+        .font-extrabold { font-weight: 800; }
+        .text-center { text-align: center; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .text-transparent { color: transparent; }
+        .bg-clip-text { -webkit-background-clip: text; background-clip: text; }
+        .bg-gradient-to-r { background-image: linear-gradient(to right, #06b6d4, #0284c7); }
+        .p-3 { padding: 0.75rem; }
+        .bg-gray-50 { background-color: #f9fafb; }
+        .rounded-2xl { border-radius: 1rem; }
+        .shadow-inner { box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); }
+        .mb-4 { margin-bottom: 1rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .font-bold { font-weight: 700; }
+        .transition-all { transition: all 0.3s; }
+        .bg-green-500 { background-color: #22c55e; }
+        .bg-red-500 { background-color: #ef4444; }
+        .bg-cyan-500 { background-color: #06b6d4; }
+        .text-white { color: #fff; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
     </style>
 </head>
 <body>
-    <div class="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center p-2 text-slate-800 font-sans">
+    <div class="min-h-screen p-2 text-slate-800 font-sans">
         <div class="w-full max-w-sm bg-white rounded-3xl shadow-xl p-6 border border-gray-200">
-            <h1 class="text-2xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-sky-600">
+            <h1 class="text-2xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r">
                 Pausezeiten
             </h1>
             
             <div class="text-start p-3 bg-gray-50 rounded-2xl shadow-inner border border-gray-200 mb-4">
-                <button 
-                    id="dailyAlarmBtn" 
-                    class="w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-300 transform"
-                >
+                <button id="dailyAlarmBtn" class="w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all">
                     Täglicher Alarm (09:30 & 13:00) ist an
                 </button>
             </div>
 
+            <div class="text-center p-3 bg-gray-50 rounded-2xl shadow-inner border border-gray-200 mb-4">
+                <button id="colorChangerBtn" class="w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all bg-indigo-600 text-white shadow-lg">
+                    Farbe ändern
+                </button>
+            </div>
+
             <div class="text-center p-3 bg-gray-50 rounded-2xl shadow-inner border border-gray-200">
-                <button 
-                    id="testToneBtn" 
-                    class="w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-300 transform bg-cyan-500 text-white shadow-lg hover:bg-cyan-400 hover:scale-105 hover:shadow-2xl"
-                >
+                <button id="testToneBtn" class="w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all bg-cyan-500 text-white shadow-lg">
                     Ton testen
                 </button>
             </div>
@@ -142,31 +108,34 @@
     </div>
 
     <script>
-        // DOM-Elemente auswählen, da wir kein React mehr haben
         const dailyAlarmBtn = document.getElementById('dailyAlarmBtn');
         const testToneBtn = document.getElementById('testToneBtn');
+        const colorChangerBtn = document.getElementById('colorChangerBtn');
+        const body = document.body;
 
-        // State-Variable (kein useState mehr, sondern eine einfache Variable)
-        let isDailyAlarmActive = true;
+        // Logik zur Farbsteuerung aus ton.html
+        const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#6366f1', '#a855f7', '#ec4899'];
         
-        // Timer-Referenz für clearTimeout
-        let dailyAlarmTimeoutId;
+        colorChangerBtn.addEventListener('click', () => {
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            body.style.backgroundColor = randomColor;
+        });
 
-        // AudioContext für die Tongenerierung
+        // Bestehende Alarm-Logik
+        let isDailyAlarmActive = true;
+        let dailyAlarmTimeoutId;
         let audioContext = null;
         
-        // Hilfsfunktion, um den Text und die Farbe des Buttons zu aktualisieren
         const updateButtonState = () => {
             if (isDailyAlarmActive) {
                 dailyAlarmBtn.textContent = 'Täglicher Alarm (09:30 & 13:00) ist an';
-                dailyAlarmBtn.className = 'w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-300 transform bg-green-500 text-white shadow-lg hover:bg-green-400 hover:scale-105 hover:shadow-2xl';
+                dailyAlarmBtn.className = 'w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all bg-green-500 text-white shadow-lg';
             } else {
                 dailyAlarmBtn.textContent = 'Täglicher Alarm (09:30 & 13:00) ist aus';
-                dailyAlarmBtn.className = 'w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-300 transform bg-red-500 text-white shadow-lg hover:bg-red-400 hover:scale-105 hover:shadow-2xl';
+                dailyAlarmBtn.className = 'w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all bg-red-500 text-white shadow-lg';
             }
         };
 
-        // Funktion zum Abspielen des Tons (unverändert)
         const playTone = () => {
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -189,72 +158,41 @@
             });
         };
 
-        // Funktion zum Setzen des nächsten Alarms
         const setNextAlarm = () => {
-            // Alte Timer löschen, falls vorhanden
-            if (dailyAlarmTimeoutId) {
-                clearTimeout(dailyAlarmTimeoutId);
-            }
-
+            if (dailyAlarmTimeoutId) clearTimeout(dailyAlarmTimeoutId);
             const now = new Date();
             const alarm1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 30, 0, 0);
             const alarm2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13, 0, 0, 0);
-            
             let nextAlarm = null;
-
-            if (now < alarm1) {
-                nextAlarm = alarm1;
-            } else if (now < alarm2) {
-                nextAlarm = alarm2;
-            } else {
+            if (now < alarm1) nextAlarm = alarm1;
+            else if (now < alarm2) nextAlarm = alarm2;
+            else {
                 const tomorrow = new Date(now);
                 tomorrow.setDate(tomorrow.getDate() + 1);
                 nextAlarm = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 9, 30, 0, 0);
             }
-
             const timeToNextAlarm = nextAlarm.getTime() - now.getTime();
-
             if (timeToNextAlarm > 0) {
-                console.log(`Nächster Alarm ist eingestellt für: ${nextAlarm.toLocaleString()}`);
                 dailyAlarmTimeoutId = setTimeout(() => {
-                    console.log("Täglicher Alarm wird ausgelöst!");
                     playTone();
                     setNextAlarm();
                 }, timeToNextAlarm);
             }
         };
 
-        // Event-Listener für die Buttons
         dailyAlarmBtn.addEventListener('click', () => {
-            isDailyAlarmActive = !isDailyAlarmActive; // Status umschalten
-            updateButtonState(); // UI aktualisieren
-            if (isDailyAlarmActive) {
-                setNextAlarm();
-            } else {
-                if (dailyAlarmTimeoutId) {
-                    clearTimeout(dailyAlarmTimeoutId);
-                }
-            }
+            isDailyAlarmActive = !isDailyAlarmActive;
+            updateButtonState();
+            if (isDailyAlarmActive) setNextAlarm();
+            else if (dailyAlarmTimeoutId) clearTimeout(dailyAlarmTimeoutId);
         });
 
         testToneBtn.addEventListener('click', playTone);
 
-        // Initialisierung
         document.addEventListener('DOMContentLoaded', () => {
             updateButtonState();
             setNextAlarm();
         });
     </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
-
-
-
