@@ -17,16 +17,20 @@
         html { background-color: #000000 !important; }
 
         body {
-            background-color: #3289D1; /* Dein Blau */
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: ui-sans-serif, system-ui, sans-serif;
+    background-color: #3289D1; 
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center; /* Zentriert den Container horizontal */
+    
+    /* --- HIER SIND DIE ENTSCHEIDENDEN ÄNDERUNGEN --- */
+    align-items: flex-start;  /* Ändert die Ausrichtung von 'center' auf den Anfang (oben) */
+    padding-top: 40px;        /* Erzeugt den gewünschten Abstand zur schwarzen Statuszeile */
+    /* ----------------------------------------------- */
+    
+    font-family: ui-sans-serif, system-ui, sans-serif;
         }
-
         /* Der Container, der 2/3 der Breite einnimmt */
         .content-card {
             width: 66vw; /* Exakt 2/3 der Bildschirmbreite */
@@ -149,3 +153,4 @@
     </script>
 </body>
 </html>
+
