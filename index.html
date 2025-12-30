@@ -23,19 +23,22 @@
     </script>
     
     <style>
+    /* 1. Die Basis bleibt schwarz für die Statusleiste */
+    html { background-color: #000000 !important; }
 
-        /* Fix für PWA-Ränder */
-    html {background-color: #000000 !important;
-          }
-
-      body {
-    background-color: #3289D1;
-    margin: 0;
-    min-height: 100%; /* Füllt mindestens die ganze Seite blau */
-    display: flex;
-    flex-direction: column;
-}
-      .min-h-screen { min-height: 100vh; }
+    body {
+        background-color: #000000; /* Körper ist schwarz */
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+      .min-h-screen { 
+        min-height: 100vh; 
+        background-color: #3289D1; /* Hier ist dein Blau wieder! */
+        /* Der Gradient liegt hier drüber, falls du ihn noch willst */
+        background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); 
+      }
       .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); }
       .from-gray-100 { --tw-gradient-from: #f3f4f6; --tw-gradient-to: rgba(243, 244, 246, 0); }
       .to-gray-200 { --tw-gradient-to: #e5e7eb; }
@@ -238,6 +241,7 @@
 </body>
 
 </html>
+
 
 
 
