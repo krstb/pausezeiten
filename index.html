@@ -22,41 +22,37 @@
     </script>
     
     <style>
-        /* Fix für PWA-Ränder wie in ton.html */
+        /* Fix aus ton.html: Das HTML-Element ganz unten ist schwarz */
         html { background-color: #000000 !important; }
 
         body {
-            background-color: #3289D1; /* Startfarbe Blau */
+            /* Hier ist dein gewünschtes Blau */
+            background-color: #3289D1; 
             margin: 0;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            transition: background-color 0.5s ease-in-out; /* Sanfter Übergang aus ton.html */
+            font-family: ui-sans-serif, system-ui, sans-serif;
         }
 
+        /* Container-Breite fixiert auf max-w-sm wie im Original */
         .min-h-screen { 
             min-height: 100vh; 
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0.5rem;
         }
 
-        /* Restliche Styles bleiben unverändert */
-        .flex { display: flex; }
-        .items-center { align-items: center; }
-        .justify-center { justify-content: center; }
-        .p-2 { padding: 0.5rem; }
-        .text-slate-800 { color: #1e293b; }
-        .font-sans { font-family: ui-sans-serif, system-ui, sans-serif; }
         .w-full { width: 100%; }
         .max-w-sm { max-width: 24rem; }
         .bg-white { background-color: #fff; }
         .rounded-3xl { border-radius: 1.5rem; }
-        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
         .p-6 { padding: 1.5rem; }
         .border { border-width: 1px; }
         .border-gray-200 { border-color: #e5e7eb; }
-        .text-2xl { font-size: 1.5rem; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
         .font-extrabold { font-weight: 800; }
         .text-center { text-align: center; }
         .mb-6 { margin-bottom: 1.5rem; }
@@ -70,9 +66,9 @@
         .mb-4 { margin-bottom: 1rem; }
         .px-4 { padding-left: 1rem; padding-right: 1rem; }
         .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .text-sm { font-size: 0.875rem; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
         .font-bold { font-weight: 700; }
-        .transition-all { transition: all 0.3s; }
+        .transition-all { transition: all 300ms; }
         .bg-green-500 { background-color: #22c55e; }
         .bg-red-500 { background-color: #ef4444; }
         .bg-cyan-500 { background-color: #06b6d4; }
@@ -81,7 +77,7 @@
     </style>
 </head>
 <body>
-    <div class="min-h-screen p-2 text-slate-800 font-sans">
+    <div class="min-h-screen">
         <div class="w-full max-w-sm bg-white rounded-3xl shadow-xl p-6 border border-gray-200">
             <h1 class="text-2xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r">
                 Pausezeiten
@@ -90,12 +86,6 @@
             <div class="text-start p-3 bg-gray-50 rounded-2xl shadow-inner border border-gray-200 mb-4">
                 <button id="dailyAlarmBtn" class="w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all">
                     Täglicher Alarm (09:30 & 13:00) ist an
-                </button>
-            </div>
-
-            <div class="text-center p-3 bg-gray-50 rounded-2xl shadow-inner border border-gray-200 mb-4">
-                <button id="colorChangerBtn" class="w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all bg-indigo-600 text-white shadow-lg">
-                    Farbe ändern
                 </button>
             </div>
 
@@ -110,18 +100,7 @@
     <script>
         const dailyAlarmBtn = document.getElementById('dailyAlarmBtn');
         const testToneBtn = document.getElementById('testToneBtn');
-        const colorChangerBtn = document.getElementById('colorChangerBtn');
-        const body = document.body;
 
-        // Logik zur Farbsteuerung aus ton.html
-        const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#06b6d4', '#3b82f6', '#6366f1', '#a855f7', '#ec4899'];
-        
-        colorChangerBtn.addEventListener('click', () => {
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            body.style.backgroundColor = randomColor;
-        });
-
-        // Bestehende Alarm-Logik
         let isDailyAlarmActive = true;
         let dailyAlarmTimeoutId;
         let audioContext = null;
@@ -140,6 +119,64 @@
             if (!audioContext) {
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
             }
+            const allFrequencies = [440, 660, 880, 440, 660, 880, 440, 660, 880];
+            const duration = 0.2;
+            const delay = 0.1;
+
+            allFrequencies.forEach((freq, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                gainNode.gain.value = 0.5;
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                const startTime = audioContext.currentTime + (index * (duration + delay));
+                oscillator.start(startTime);
+                oscillator.stop(startTime + duration);
+            });
+        };
+
+        const setNextAlarm = () => {
+            if (dailyAlarmTimeoutId) clearTimeout(dailyAlarmTimeoutId);
+            const now = new Date();
+            const alarm1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 30, 0, 0);
+            const alarm2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13, 0, 0, 0);
+            
+            let nextAlarm = null;
+            if (now < alarm1) nextAlarm = alarm1;
+            else if (now < alarm2) nextAlarm = alarm2;
+            else {
+                const tomorrow = new Date(now);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                nextAlarm = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 9, 30, 0, 0);
+            }
+
+            const timeToNextAlarm = nextAlarm.getTime() - now.getTime();
+            if (timeToNextAlarm > 0) {
+                dailyAlarmTimeoutId = setTimeout(() => {
+                    playTone();
+                    setNextAlarm();
+                }, timeToNextAlarm);
+            }
+        };
+
+        dailyAlarmBtn.addEventListener('click', () => {
+            isDailyAlarmActive = !isDailyAlarmActive;
+            updateButtonState();
+            if (isDailyAlarmActive) setNextAlarm();
+            else if (dailyAlarmTimeoutId) clearTimeout(dailyAlarmTimeoutId);
+        });
+
+        testToneBtn.addEventListener('click', playTone);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateButtonState();
+            setNextAlarm();
+        });
+    </script>
+</body>
+</html>
             const allFrequencies = [440, 660, 880, 440, 660, 880, 440, 660, 880];
             const duration = 0.2;
             const delay = 0.1;
@@ -196,3 +233,4 @@
     </script>
 </body>
 </html>
+
