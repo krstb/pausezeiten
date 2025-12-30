@@ -22,17 +22,24 @@
       }
     </script>
     
-    <style>
+        <style>
     /* 1. Die Basis bleibt schwarz für die Statusleiste */
     html { background-color: #000000 !important; }
 
     body {
-        background-color: #000000; /* Körper ist schwarz */
+        background-color: #000000; /* Körper ist schwarz -> Statuszeile wird schwarz */
         margin: 0;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
     }
+
+    /* Hier das background-color: #3289D1 entfernen, damit es nicht das Schwarz überlagert */
+    .min-h-screen { 
+        min-height: 100vh; 
+        display: flex;
+    }
+
       .min-h-screen { 
         min-height: 100vh; 
         background-color: #3289D1; /* Hier ist dein Blau wieder! */
@@ -241,6 +248,7 @@
 </body>
 
 </html>
+
 
 
 
