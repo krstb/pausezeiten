@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pausezeiten</title>
 
     <link rel="manifest" href="manifest.json">
@@ -12,97 +12,90 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="icon-192.png">
 
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('sw.js')
-            .catch(err => console.log('SW Fehler:', err));
-        });
-      }
-    </script>
-    
     <style>
+        /* Der bewährte Fix aus ton.html für schwarze Ränder */
         html { background-color: #000000 !important; }
 
         body {
-            background-color: #3289D1; 
+            background-color: #3289D1; /* Dein Blau */
             margin: 0;
+            padding: 0;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             font-family: ui-sans-serif, system-ui, sans-serif;
         }
 
-        /* Zentrierung und Padding für das Handy */
-        .page-wrapper { 
-            min-height: 100vh; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem; /* Abstand zum Bildschirmrand */
-        }
-
-        /* Feste maximale Breite für den weißen Kasten */
+        /* Der Container, der 2/3 der Breite einnimmt */
         .content-card {
-            width: 100%;
-            max-width: 350px; /* Explizite Breite für schmale Handy-Optik */
-            background-color: #fff;
-            border-radius: 1.5rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            width: 66vw; /* Exakt 2/3 der Bildschirmbreite */
+            min-width: 280px; /* Schutz vor zu schmalen Displays */
+            max-width: 400px; /* Schutz vor zu breiten Tabletten */
+            background-color: #ffffff;
+            border-radius: 2rem;
             padding: 1.5rem;
-            border: 1px solid #e5e7eb;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-sizing: border-box;
         }
 
-        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-        .font-extrabold { font-weight: 800; }
-        .text-center { text-align: center; }
-        .mb-6 { margin-bottom: 1.5rem; }
-        .text-transparent { color: transparent; }
-        .bg-clip-text { -webkit-background-clip: text; background-clip: text; }
-        .bg-gradient-to-r { background-image: linear-gradient(to right, #06b6d4, #0284c7); }
-        .p-3 { padding: 0.75rem; }
-        .bg-gray-50 { background-color: #f9fafb; }
-        .rounded-2xl { border-radius: 1rem; }
-        .shadow-inner { box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); }
-        .mb-4 { margin-bottom: 1rem; }
-        .w-full { width: 100%; }
-        .px-4 { padding-left: 1rem; padding-right: 1rem; }
-        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
-        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-        .font-bold { font-weight: 700; }
-        .transition-all { transition: all 300ms; }
-        .bg-green-500 { background-color: #22c55e; }
-        .bg-red-500 { background-color: #ef4444; }
-        .bg-cyan-500 { background-color: #06b6d4; }
-        .text-white { color: #fff; }
-        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        /* Design-Elemente (unverändert) */
+        .text-2xl { font-size: 1.5rem; font-weight: 800; text-align: center; margin-bottom: 1.5rem; }
+        .bg-gradient-text { 
+            background: linear-gradient(to right, #06b6d4, #0284c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .btn-container {
+            background-color: #f9fafb;
+            padding: 0.75rem;
+            border-radius: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bg-green-500 { background-color: #22c55e; color: white; }
+        .bg-red-500 { background-color: #ef4444; color: white; }
+        .bg-cyan-500 { background-color: #06b6d4; color: white; }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body>
-    <div class="page-wrapper">
-        <div class="content-card">
-            <h1 class="text-2xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r">
-                Pausezeiten
-            </h1>
-            
-            <div class="text-start p-3 bg-gray-50 rounded-2xl shadow-inner border border-gray-200 mb-4">
-                <button id="dailyAlarmBtn" class="w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all">
-                    Täglicher Alarm (09:30 & 13:00) ist an
-                </button>
-            </div>
 
-            <div class="text-center p-3 bg-gray-50 rounded-2xl shadow-inner border border-gray-200">
-                <button id="testToneBtn" class="w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all bg-cyan-500 text-white shadow-lg">
-                    Ton testen
-                </button>
-            </div>
+    <div class="content-card">
+        <h1 class="text-2xl bg-gradient-text">Pausezeiten</h1>
+        
+        <div class="btn-container">
+            <button id="dailyAlarmBtn" class="btn">
+                Täglicher Alarm (09:30 & 13:00) ist an
+            </button>
+        </div>
+
+        <div class="btn-container" style="margin-bottom: 0;">
+            <button id="testToneBtn" class="btn bg-cyan-500 shadow-lg">
+                Ton testen
+            </button>
         </div>
     </div>
 
     <script>
+        // ... Deine funktionierende Logik (dailyAlarmBtn, testToneBtn, playTone, setNextAlarm) ...
         const dailyAlarmBtn = document.getElementById('dailyAlarmBtn');
         const testToneBtn = document.getElementById('testToneBtn');
-
         let isDailyAlarmActive = true;
         let dailyAlarmTimeoutId;
         let audioContext = null;
@@ -110,21 +103,16 @@
         const updateButtonState = () => {
             if (isDailyAlarmActive) {
                 dailyAlarmBtn.textContent = 'Täglicher Alarm (09:30 & 13:00) ist an';
-                dailyAlarmBtn.className = 'w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all bg-green-500 text-white shadow-lg';
+                dailyAlarmBtn.className = 'btn bg-green-500 shadow-lg';
             } else {
                 dailyAlarmBtn.textContent = 'Täglicher Alarm (09:30 & 13:00) ist aus';
-                dailyAlarmBtn.className = 'w-full px-4 py-3 rounded-2xl text-sm font-bold transition-all bg-red-500 text-white shadow-lg';
+                dailyAlarmBtn.className = 'btn bg-red-500 shadow-lg';
             }
         };
 
         const playTone = () => {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const allFrequencies = [440, 660, 880, 440, 660, 880, 440, 660, 880];
-            const duration = 0.2;
-            const delay = 0.1;
-
             allFrequencies.forEach((freq, index) => {
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
@@ -133,49 +121,31 @@
                 gainNode.gain.value = 0.5;
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
-                const startTime = audioContext.currentTime + (index * (duration + delay));
+                const startTime = audioContext.currentTime + (index * 0.3);
                 oscillator.start(startTime);
-                oscillator.stop(startTime + duration);
+                oscillator.stop(startTime + 0.2);
             });
         };
 
         const setNextAlarm = () => {
             if (dailyAlarmTimeoutId) clearTimeout(dailyAlarmTimeoutId);
             const now = new Date();
-            const alarm1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 30, 0, 0);
-            const alarm2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13, 0, 0, 0);
-            
-            let nextAlarm = null;
-            if (now < alarm1) nextAlarm = alarm1;
-            else if (now < alarm2) nextAlarm = alarm2;
-            else {
-                const tomorrow = new Date(now);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                nextAlarm = new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate(), 9, 30, 0, 0);
-            }
-
+            const alarm1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 30, 0);
+            const alarm2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 13, 0, 0);
+            let nextAlarm = now < alarm1 ? alarm1 : (now < alarm2 ? alarm2 : new Date(now.getTime() + 86400000));
             const timeToNextAlarm = nextAlarm.getTime() - now.getTime();
-            if (timeToNextAlarm > 0) {
-                dailyAlarmTimeoutId = setTimeout(() => {
-                    playTone();
-                    setNextAlarm();
-                }, timeToNextAlarm);
-            }
+            dailyAlarmTimeoutId = setTimeout(() => { playTone(); setNextAlarm(); }, timeToNextAlarm);
         };
 
         dailyAlarmBtn.addEventListener('click', () => {
             isDailyAlarmActive = !isDailyAlarmActive;
             updateButtonState();
             if (isDailyAlarmActive) setNextAlarm();
-            else if (dailyAlarmTimeoutId) clearTimeout(dailyAlarmTimeoutId);
+            else clearTimeout(dailyAlarmTimeoutId);
         });
 
         testToneBtn.addEventListener('click', playTone);
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateButtonState();
-            setNextAlarm();
-        });
+        document.addEventListener('DOMContentLoaded', () => { updateButtonState(); setNextAlarm(); });
     </script>
 </body>
 </html>
