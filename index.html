@@ -12,7 +12,14 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="icon-192.png">
-
+<script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW Fehler:', err));
+            });
+        }
+    </script>
+    
     <style>
         html { background-color: #000000 !important; }
 
@@ -149,5 +156,6 @@
     </script>
 </body>
 </html>
+
 
 
